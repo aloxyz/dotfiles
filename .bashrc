@@ -18,3 +18,4 @@ export PATH
 # User specific aliases and functions
 export GOPATH=$HOME/go
 alias config='/usr/bin/git --git-dir=/home/alo/.cfg/ --work-tree=/home/alo'
+export SBCL_HOME=/usr/lib/sbcl/
