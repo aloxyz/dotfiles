@@ -1,2 +1,0 @@
-wifi/wifi.asd
-battery-portable/battery-portable.asd
