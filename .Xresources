@@ -1,0 +1,76 @@
+Xcursor.theme: Adwaita
+gtk-cursor-theme-name: Adwaita
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1URxvt.perl-ext-common: default,matcher
+URxvt.matcher.rend.0: Uline Bold fg5
+
+URxvt.perl-ext: default,url-select
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+
+!urxvt color scheme:
+
+!transparency
+urxvt*transparent: true
+urxvt*shading: 17.5
+
+!background
+URxvt*background: #2B2B2B
+URxvt*foreground: #DEDEDE
+
+URxvt*colorUL: #86a2b0
+
+! black
+URxvt*color0  : #2E3436
+URxvt*color8  : #555753
+! red
+URxvt*color1  : #CC0000
+URxvt*color9  : #EF2929
+! green
+URxvt*color2  : #4E9A06
+URxvt*color10 : #8AE234
+! yellow
+URxvt*color3  : #C4A000
+URxvt*color11 : #FCE94F
+! blue
+URxvt*color4  : #3465A4
+URxvt*color12 : #729FCF
+! magenta
+URxvt*color5  : #75507B
+URxvt*color13 : #AD7FA8
+! cyan
+URxvt*color6  : #06989A
+URxvt*color14 : #34E2E2
+! white
+URxvt*color7  : #D3D7CF
+URxvt*color15 : #EEEEEC
+
+URxvt*borderLess: false
+
+!urxvt font config:
+
+URxvt.font: xft:Liberation Mono:size=11
+URxvt.letterSpace: -1.5
+
+!urxvt scrolling options and cursor style:
+
+! enable scrollbar
+URxvt*scrollBar:          true     
+! scrollbar width
+URxvt*thickness:          7.5
+! scrollbar color
+URxvt*scrollColor:        #06989A
+! scrollbar trough area color
+!URxvt*troughColor:        #333333
+! scrollbar without a trough
+!URxvt*scrollBar_floating: false
+! scrollbar to the right
+URxvt*scrollBar_right:    true
+! scrollbar style
+URxvt*scrollstyle:        plain
+
+URxvt*saveLines: 12000
+URxvt*cursorBlink: true
+URxvt*cursorUnderline: true
