@@ -1,119 +1,64 @@
-1(in-package :stumpwm)
+(in-package :stumpwm)
 ;; modules
-(ql:quickload :battery-portable)
-(ql:quickload :wifi)
-;; font setting
-(set-font "-*-Liberation Mono-medium-r-normal--*-80-*-*-*-*-iso10646-1")
 
-;; define multimedia keys
+;;multimedia keys
 (define-key *top-map* (kbd "XF86AudioRaiseVolume") "exec amixer -c 1 set Master 1db+")
 (define-key *top-map* (kbd "XF86AudioLowerVolume") "exec amixer -c 1 set Master 1db-")
 ;;(define-key *top-map* (kbd "XF86MonBrightnessDown") "exec xrandr --output eDP-1 --brightness n")
 
-;;toggle gaps
-(define-key *root-map* (kbd "g") (setf *useless-gaps-on* t))
-(define-key *root-map* (kbd "h") (setf *useless-gaps-on* nil))
 
-;;execute telegram with C-t u
+;;keymaps
 (define-key *root-map* (kbd "u") "exec telegram-desktop")
-
-;; execute chromium with C-t z
 (define-key *root-map* (kbd "z") "exec firefox")
-
-;; execute urxvt with C-t c
 (define-key *root-map* (kbd "c") "exec urxvt")
 
-;; remove split with C-t j
-(define-key *root-map* (kbd "j") "remove-split")
-
-;; load configuration file with C-t y
-(define-key *root-map* (kbd "y") "loadrc")
-
-;; mode-line
-;;alsa meter
-;;(setf *avalue* "exec awk -F\"[][]\" \'/dB/ { print $2 }\' <(amixer sget Master)")
-
 (define-key *root-map* (kbd "m") "mode-line")
-(setf *screen-mode-line-format* "%d | %B | %I | %w")
-(setf *mode-line-timeout* 1)
+(define-key *root-map* (kbd "y") "loadrc")
+(define-key *root-map* (kbd "j") "remove-split")
+(define-key *root-map* (kbd "f") "fullscreen")
 
+;;colours and settings
+(let ((planet-fg      "#8898a9")
+      (planet-fg-1    "#d2dde8")
+      (planet-fg-2    "#c4dde8")
+      (planet-bg      "#192129")
+      (planet-bg-2    "#090c10")
+      (planet-bg-3    "#243248")
+      (planet-bg-4    "#2A3A53")
+      (planet-error   "#ff8683")
+      (planet-warning "#e9b96e")
+      (planet-yellow  "#fbf2c0")
+      (planet-green   "#649d8a")
+      (planet-blue    "#729fcf")
+      (planet-purple  "#a6a1ea")
+      (border-width 1))
+  ;;border size
+  (setf *window-border-style* :thin)
+  (setf *maxsize-border-width* border-width)
+  (setf *normal-border-width* border-width)
+  (setf *transient-border-width* border-width)
+  ;;border colour
+  (set-win-bg-color planet-bg)
+  (set-focus-color planet-green)
+  (set-float-focus-color planet-green)
+  (set-unfocus-color planet-bg-4)
+  (set-float-unfocus-color planet-blue)
+  ;;mode line
+  (setf *mode-line-background-color* planet-bg)
+  (setf *mode-line-foreground-color* planet-fg)
+  (setf *mode-line-border-width* border-width)
+  (setf *mode-line-border-color* planet-bg-4)
+  ;;messages
+  (set-font "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-15-*-*-*-m-0-iso10646-1")
+  (set-msg-border-width border-width)
+  (set-fg-color planet-fg)
+  (set-bg-color planet-bg)
+  (set-border-color planet-green)
+  (setf *input-window-gravity* :top-right)
+  ;;frames
+  (setf *mouse-focus-policy* :click)
+  (gravity :center)
+  ;;mode-line
+  (setf *screen-mode-line-format* "%d | %w")
+  (setf *mode-line-timeout* 1))
 
-(setf *frame-number-map* "1234567890")
-(setf *window-number-map* "1234567890")
-
-(setf *window-border-style* :thin)
-(set-float-focus-color "white")
-(set-float-unfocus-color "grey")
-
-(set-focus-color "grey")
-(set-unfocus-color "black")
-
-
-;; gaps
-(defvar *useless-gaps-size* 7)
-(defvar *useless-gaps-on* nil)
-
-;; Redefined - with `if`s for *useless-gaps-on*
-(defun maximize-window (win)
-  "Maximize the window."
-  (multiple-value-bind (x y wx wy width height border stick)
-      (geometry-hints win)
-
-    (if *useless-gaps-on*
-        (setf width (- width (* 2 *useless-gaps-size*))
-              height (- height (* 2 *useless-gaps-size*))
-              x (+ x *useless-gaps-size*)
-              y (+ y *useless-gaps-size*)))
-
-    (dformat 4 "maximize window ~a x: ~d y: ~d width: ~d height: ~d border: ~d stick: ~s~%" win x y width height border stick)
-    ;; This is the only place a window's geometry should change
-    (set-window-geometry win :x wx :y wy :width width :height height :border-width 0)
-    (xlib:with-state ((window-parent win))
-      ;; FIXME: updating the border doesn't need to be run everytime
-      ;; the window is maximized, but only when the border style or
-      ;; window type changes. The overhead is probably minimal,
-      ;; though.
-      (setf (xlib:drawable-x (window-parent win)) x
-            (xlib:drawable-y (window-parent win)) y
-            (xlib:drawable-border-width (window-parent win)) border)
-      ;; the parent window should stick to the size of the window
-      ;; unless it isn't being maximized to fill the frame.
-      (if (or stick
-              (find *window-border-style* '(:tight :none)))
-          (setf (xlib:drawable-width (window-parent win)) (window-width win)
-                (xlib:drawable-height (window-parent win)) (window-height win))
-          (let ((frame (window-frame win)))
-            (setf (xlib:drawable-width (window-parent win)) (- (frame-width frame)
-                                                               (* 2 (xlib:drawable-border-width (window-parent win)))
-                                                               (if *useless-gaps-on* (* 2 *useless-gaps-size*) 0))
-                  (xlib:drawable-height (window-parent win)) (- (frame-display-height (window-group win) frame)
-                                                                (* 2 (xlib:drawable-border-width (window-parent win)))
-                                                                (if *useless-gaps-on* (* 2 *useless-gaps-size*) 0)))))
-      ;; update the "extents"
-      (xlib:change-property (window-xwin win) :_NET_FRAME_EXTENTS
-                            (list wx wy
-                                  (- (xlib:drawable-width (window-parent win)) width wx)
-                                  (- (xlib:drawable-height (window-parent win)) height wy))
-                            :cardinal 32))))
-
-(defun reset-all-windows ()
-  "Reset the size for all tiled windows"
-  (let ((windows (mapcan (lambda (g)
-                           (mapcar (lambda (w) w) (sort-windows g)))
-                         (sort-groups (current-screen)))))
-    (mapcar (lambda (w)
-              (if (string= (class-name (class-of w)) "TILE-WINDOW")
-                  (maximize-window w))) windows)))
-
-(defcommand gaps () ()
-            "Toggle the padding of tiled windows"
-            (setf *useless-gaps-on* (null *useless-gaps-on*))
-
-            ;; Following is pseudo code to use hooks
-            ;; to do something like change border colors or size
-            ;; (if *useless-gaps-on*
-            ;;     (run-hook 'frame-gap-on)
-            ;;     (run-hook 'frame-gap-off))
-            (reset-all-windows))
-
-(setf *useless-gaps-on* t)

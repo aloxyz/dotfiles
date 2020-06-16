@@ -1,5 +1,3 @@
-Xcursor.theme: Adwaita
-gtk-cursor-theme-name: Adwaita
 URxvt.perl-ext-common: default,matcher
 URxvt.url-launcher: /usr/bin/xdg-open
 URxvt.matcher.button: 1URxvt.perl-ext-common: default,matcher
@@ -13,30 +11,30 @@ URxvt.url-select.underline: true
 !urxvt color scheme:
 
 !transparency
-urxvt*transparent: true
-urxvt*shading: 17.5
+urxvt*transparent: false
+urxvt*shading: 10
 
 !background
-URxvt*background: #2B2B2B
+URxvt*background: #192129
 URxvt*foreground: #DEDEDE
 
 URxvt*colorUL: #86a2b0
 
 ! black
 URxvt*color0  : #2E3436
-URxvt*color8  : #555753
+URxvt*color8  : #2E3436
 ! red
-URxvt*color1  : #CC0000
-URxvt*color9  : #EF2929
+URxvt*color1  : #F05D5E
+URxvt*color9  : #F05D5E
 ! green
-URxvt*color2  : #4E9A06
-URxvt*color10 : #8AE234
+URxvt*color2  : #528275
+URxvt*color10 : #528275
 ! yellow
-URxvt*color3  : #C4A000
-URxvt*color11 : #FCE94F
+URxvt*color3  : #E8C547
+URxvt*color11 : #E8C547
 ! blue
-URxvt*color4  : #3465A4
-URxvt*color12 : #729FCF
+URxvt*color4  : #334B71
+URxvt*color12 : #334B71
 ! magenta
 URxvt*color5  : #75507B
 URxvt*color13 : #AD7FA8
@@ -44,20 +42,20 @@ URxvt*color13 : #AD7FA8
 URxvt*color6  : #06989A
 URxvt*color14 : #34E2E2
 ! white
-URxvt*color7  : #D3D7CF
-URxvt*color15 : #EEEEEC
+URxvt*color7  : #E0E0E0
+URxvt*color15 : #E0E0E0
 
 URxvt*borderLess: false
 
 !urxvt font config:
 
-URxvt.font: xft:Liberation Mono:size=11
+URxvt.font: xft:DejaVu Sans Mono:size=10:foundry=PfEd:weight=normal:width=normal:spacing=100:scalable=true
 URxvt.letterSpace: -1.5
 
 !urxvt scrolling options and cursor style:
 
 ! enable scrollbar
-URxvt*scrollBar:          true     
+URxvt*scrollBar:          false     
 ! scrollbar width
 URxvt*thickness:          7.5
 ! scrollbar color
